@@ -27,7 +27,7 @@ app.post("/repositories", (request, response) => {
   const {title, url, techs} = request.body;
   const repository = {id: uuid(), likes: 0, title, url, techs };
   repositories.push(repository)
-  return response.status(200).json(repository)
+  return response.json(repository)
 });
 
 app.put("/repositories/:id", injectReqRepositoryIndex, (request, response) => {
@@ -36,20 +36,20 @@ app.put("/repositories/:id", injectReqRepositoryIndex, (request, response) => {
   const {id, likes} = repositories[repoIndex];
   let repository = {title, url, techs, id, likes};
   repositories[repoIndex] = repository;
-  return response.status(200).json(repositories)
+  return response.json(repositories)
 });
 
 app.delete("/repositories/:id", injectReqRepositoryIndex, (request, response) => {
   const {repoIndex} = request;
   repositories.splice(repoIndex,1);
-  return response.status(200).send('')
+  return response.status(204).send('')
 });
 
 app.post("/repositories/:id/like", injectReqRepositoryIndex, (request, response) => {
   const {repoIndex} = request;
   const repo = repositories[repoIndex];
   repositories[repoIndex].likes = ++repo.likes;
-  return response.status(200).json(repo)
+  return response.json(repo)
 });
 
 module.exports = app;
