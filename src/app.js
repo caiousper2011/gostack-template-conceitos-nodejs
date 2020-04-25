@@ -36,7 +36,7 @@ app.put("/repositories/:id", injectReqRepositoryIndex, (request, response) => {
   const {id, likes} = repositories[repoIndex];
   let repository = {title, url, techs, id, likes};
   repositories[repoIndex] = repository;
-  return response.json(repositories)
+  return response.json(repository)
 });
 
 app.delete("/repositories/:id", injectReqRepositoryIndex, (request, response) => {
