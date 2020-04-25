@@ -10,6 +10,9 @@ app.use(cors());
 
 function injectReqRepositoryIndex(request, response, next){
   const repoIndex = repositories.findIndex(repo=>repo.id==request.params.id);
+  if(!(repoIndex>=0)){
+    return response.status(400).json({error: 'Repository does not exists'})
+  }
   request.repoIndex = repoIndex;
   next();
 }
@@ -28,9 +31,12 @@ app.post("/repositories", (request, response) => {
 
 app.put("/repositories/:id", injectReqRepositoryIndex, (request, response) => {
   const {repoIndex} = request;
-  let repository = repositories[repoIndex];
-  repositories[repoIndex] = {...repository, ...request.body};
-  return response.status(200).json(repository)
+  const {title, url, techs} = request.body;
+  const {id, likes} = repositories[repoIndex];
+  let repository = {title, url, techs, id, likes};
+  console.log({title, url, techs})
+  repositories[repoIndex] = repository;
+  return response.status(200).json(repositories)
 });
 
 app.delete("/repositories/:id", injectReqRepositoryIndex, (request, response) => {
