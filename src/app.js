@@ -24,7 +24,8 @@ app.get("/repositories", (request, response) => {
 });
 
 app.post("/repositories", (request, response) => {
-  const repository = {id: uuid(), likes: 0, ...request.body};
+  const {title, url, techs} = request.body;
+  const repository = {id: uuid(), likes: 0, title, url, techs };
   repositories.push(repository)
   return response.status(200).json(repository)
 });
@@ -34,7 +35,6 @@ app.put("/repositories/:id", injectReqRepositoryIndex, (request, response) => {
   const {title, url, techs} = request.body;
   const {id, likes} = repositories[repoIndex];
   let repository = {title, url, techs, id, likes};
-  console.log({title, url, techs})
   repositories[repoIndex] = repository;
   return response.status(200).json(repositories)
 });
